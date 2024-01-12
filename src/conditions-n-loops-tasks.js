@@ -118,21 +118,19 @@ function convertToRomanNumerals(num) {
     throw new Error('Error');
   }
 
-  let renaming = num;
+  const symbols = ['I', 'IV', 'V', 'IX', 'X', 'XL', 'L', 'XC', 'C'];
+  const values = [1, 4, 5, 9, 10, 40, 50, 90, 100];
 
-  const romanNumerals = [
-    { value: 10, number: 'X' },
-    { value: 9, number: 'IX' },
-    { value: 5, number: 'V' },
-    { value: 4, number: 'IV' },
-    { value: 1, number: 'I' },
-  ];
+  let result = '';
 
-  return romanNumerals.reduce((result, { value, number }) => {
-    const count = Math.floor(renaming / value);
-    renaming %= value;
-    return result + number.repeat(count);
-  }, '');
+  for (let i = symbols.length - 1; i >= 0; ) {
+    while (num >= values[i]) {
+      result += symbols[i];
+      result -= values[i];
+    }
+  }
+
+  return result;
 }
 
 /**
