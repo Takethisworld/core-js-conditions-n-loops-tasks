@@ -118,21 +118,30 @@ function convertToRomanNumerals(num) {
     throw new Error('Error');
   }
 
-  const romanNumerals = [
-    { value: 10, numeral: 'X' },
-    { value: 9, numeral: 'IX' },
-    { value: 5, numeral: 'V' },
-    { value: 4, numeral: 'IV' },
-    { value: 1, numeral: 'I' },
-  ];
+  const romanNumerals = {
+    1: 'I',
+    2: 'II',
+    3: 'III',
+    4: 'IV',
+    5: 'V',
+    6: 'VI',
+    7: 'VII',
+    8: 'VIII',
+    9: 'IX',
+    10: 'X',
+    20: 'XX',
+    30: 'XXX',
+    40: 'XL',
+    50: 'L',
+  };
 
-  let remaining = num;
+  if (romanNumerals[num]) {
+    return romanNumerals[num];
+  }
+  const tens = Math.floor(num / 10) * 10;
+  const ones = num % 10;
 
-  return romanNumerals.reduce((result, { value, numeral }) => {
-    const count = Math.floor(remaining / value);
-    remaining %= value;
-    return result + numeral.repeat(count);
-  }, '');
+  return romanNumerals[tens] + romanNumerals[ones];
 }
 
 /**
@@ -150,8 +159,28 @@ function convertToRomanNumerals(num) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  const digitForWords = {
+    0: 'zero',
+    1: 'one',
+    2: 'tow',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+    '.': 'point',
+    ',': 'point',
+    '-': 'minus',
+  };
+
+  return numberStr
+    .split('')
+    .map((char) => (digitForWords[char] ? digitForWords[char] : char))
+    .join(' ')
+    .replace(/(\w+)\s+/g, '$1 ');
 }
 
 /**
@@ -166,8 +195,16 @@ function convertNumberToString(/* numberStr */) {
  *  '0123210'   => true
  *  'qweqwe'    => false
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  const strLC = str.replace(/\s/g, '').toLowerCase();
+  if (strLC.length <= 1 && str.charCodeAt === '') {
+    return true;
+  }
+
+  if (strLC[0] === strLC[strLC.length - 1]) {
+    return isPalindrome(strLC.substring(1, strLC.length - 1));
+  }
+  return false;
 }
 
 /**
